@@ -6,24 +6,16 @@ export const getters = {
   todos: (state) => state.todos,
 }
 export const mutations = {
-  addTodo(state, payload) {
-    const newTodo = {
-      id: Date.now(),
-      text: payload,
-      isDone: false,
-    }
-    state.todos.push(newTodo)
+  addTodo(state, todo) {
+    state.todos.push(todo)
   },
   deleteTodo(state, id) {
     state.todos = state.todos.filter((todo) => todo.id !== id)
   },
-  doneTodo(state, targetTodo) {
-    const todo = state.todos.filter((todo) => todo.id === targetTodo.id)[0]
-    todo.isDone = !todo.isDone
-  },
-  editTodo(state, targetTodo) {
-    const todo = state.todos.filter((todo) => todo.id === targetTodo.id)[0]
-    todo.text = targetTodo.text
+  editTodo(state, todo) {
+    const targetTodo = state.todos.filter((target) => target.id === todo.id)[0]
+    targetTodo.text = todo.text
+    targetTodo.isDone = todo.isDone
   },
   setTodos(state, todos) {
     // todosをリセット
@@ -36,12 +28,9 @@ export const actions = {
   async addTodo({ commit }, text) {
     try {
       const response = await this.$axios.$post('/todos', { text })
-      commit('addTodo', text)
-      setTimeout(() => {
-        alert(response.message)
-      }, 100)
+      commit('addTodo', response.todo)
+      commit('snackbar/showSnackbar', response.message)
     } catch (error) {
-      // console.log(error)
       alert('Something went wrong')
     }
   },
@@ -49,26 +38,8 @@ export const actions = {
     try {
       const response = await this.$axios.$delete(`/todos/${id}`)
       commit('deleteTodo', id)
-      setTimeout(() => {
-        alert(response.message)
-      }, 100)
+      commit('snackbar/showSnackbar', response.message)
     } catch (error) {
-      // console.log(error)
-      alert('Something went wrong')
-    }
-  },
-  async doneTodo({ commit }, targetTodo) {
-    try {
-      const response = await this.$axios.$put(
-        `/todos/${targetTodo.id}`,
-        targetTodo
-      )
-      commit('doneTodo', targetTodo)
-      setTimeout(() => {
-        alert(response.message)
-      }, 100)
-    } catch (error) {
-      // console.log(error)
       alert('Something went wrong')
     }
   },
@@ -78,12 +49,9 @@ export const actions = {
         `/todos/${targetTodo.id}`,
         targetTodo
       )
-      commit('editTodo', targetTodo)
-      setTimeout(() => {
-        alert(response.message)
-      }, 100)
+      commit('editTodo', response.todo)
+      commit('snackbar/showSnackbar', response.message)
     } catch (error) {
-      // console.log(error)
       alert('Something went wrong')
     }
   },

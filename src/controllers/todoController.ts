@@ -29,7 +29,8 @@ export const createTodo: RequestHandler = async (req, res, next) => {
   try {
     const newTodo = Todo.create(todoContent)
     await Todo.save(newTodo)
-    res.json({ message: 'Todo is added successfully!!!!' })
+    const message = "Todo is added successfully!!!!"
+    res.json({ message, todo: newTodo })
   } catch (error) {
     console.log(error)
     res.json({ message: error })
@@ -43,7 +44,8 @@ export const updateTodo: RequestHandler = async (req, res, next) => {
     targetTodo.text = req.body.text
     targetTodo.isDone = req.body.isDone
     await Todo.save(targetTodo)
-    res.json({ message: 'This Todo is successfully updated!!' })
+    const message = "This Todo is successfully updated!!"
+    res.json({ message, todo: targetTodo })
   } catch (error) {
     console.log(error)
     res.json({ message: 'faild' })
@@ -54,8 +56,8 @@ export const deleteTodo: RequestHandler = async (req, res, next) => {
   const targetTodoId = req.params.id
   try {
     await Todo.delete(targetTodoId)
-
-    res.json({ message: 'The todo is successfully deleted.' })
+    const message = "The todo is successfully deleted."
+    res.json({ message })
   } catch (error) {
     console.log(error)
     res.json({ message: error })

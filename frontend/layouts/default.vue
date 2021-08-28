@@ -70,14 +70,16 @@
 
     <v-main>
       <Nuxt />
+      <snack-bar />
     </v-main>
   </v-app>
 </template>
 
 <script>
+import SnackBar from '../components/shared/SnackBar.vue'
 import LiveDateTime from '../components/tool/LiveDateTime.vue'
 export default {
-  components: { LiveDateTime },
+  components: { LiveDateTime, SnackBar },
   data() {
     return {
       drawer: false,

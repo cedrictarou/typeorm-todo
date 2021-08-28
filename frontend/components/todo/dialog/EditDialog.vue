@@ -6,7 +6,7 @@
         <v-text-field
           v-model="dialogText"
           :rules="rules"
-          @keyup.Enter="saveTodo()"
+          @keyup.enter="saveTodo()"
         ></v-text-field>
       </v-card-text>
       <v-card-actions>

@@ -67,7 +67,7 @@ export default {
         text: todo.text,
         isDone: !todo.isDone,
       }
-      this.$store.dispatch('doneTodo', targetTodo)
+      this.$store.dispatch('editTodo', targetTodo)
     },
     openEditDialog() {
       this.dialog.edit = true
