@@ -1,5 +1,7 @@
 import "reflect-metadata";
 import { createConnection } from "typeorm";
+import cors from 'cors';
+import session from 'express-session'
 
 import express, { Request, Response, NextFunction } from 'express'
 import usersRoute from './routes/users'
@@ -8,19 +10,22 @@ import todosRoute from './routes/todos'
 const app = express()
 
 app.use(express.json())
+app.use(cors())
 
-app.use(function (req: Request, res: Response, next: NextFunction) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept'
-  );
-  res.header('Access-Control-Allow-Methods', 'GET, POST, DELETE, PUT');
-  next();
-});
+// session
+app.use(session({
+  secret: 'secret',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,
+    secure: false,
+    maxAge: 24 * 30 * 60 * 1000
+  }
+}));
 
-app.use('/users', usersRoute)
-app.use('/todos', todosRoute)
+app.use('/api/users', usersRoute)
+app.use('/api/todos', todosRoute)
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.log(err)
   res.status(500).json({ message: err.message })

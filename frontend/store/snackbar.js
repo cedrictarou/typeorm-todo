@@ -20,10 +20,10 @@ export const mutations = {
 }
 
 export const actions = {
-  showSnackbar({ commit, getters }) {
+  showSnackbar({ commit, getters }, message) {
     const timeout = getters.snackbar.timeout
     setTimeout(() => {
-      commit('showSnackbar')
+      commit('showSnackbar', message)
     }, timeout)
   },
   closeSnackbar({ commit }) {

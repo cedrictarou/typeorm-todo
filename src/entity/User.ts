@@ -1,5 +1,8 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
-import { Todo } from './Todo'
+// import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, BeforeInsert } from "typeorm";
+import { IsEmail, Length } from "class-validator";
+import { v4 as uuid } from 'uuid'
+// import { Todo } from './Todo'
 
 @Entity()
 export class User extends BaseEntity {
@@ -8,14 +11,34 @@ export class User extends BaseEntity {
   id: number;
 
   @Column()
-  firstName: string;
+  @Length(1, 20)
+  username: string;
 
   @Column()
-  lastName: string;
+  @IsEmail()
+  email: string;
 
   @Column()
-  age: number;
+  password: string;
 
-  @OneToMany(() => Todo, todo => todo.user)
-  todos: Todo[];
+  @Column({ type: 'uuid' })
+  uuid: string
+
+
+  @CreateDateColumn()
+  createdAt: Date
+
+  @UpdateDateColumn()
+  updatedAt: Date
+
+  @BeforeInsert()
+  createUuid() {
+    this.uuid = uuid();
+  }
+
+  toJSON() {
+    return { ...this, id: undefined }
+  }
+  // @OneToMany(() => Todo, todo => todo.user)
+  // todos: Todo[];
 }

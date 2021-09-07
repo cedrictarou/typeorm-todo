@@ -34,10 +34,38 @@ export default {
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: ['@nuxtjs/axios'],
+  modules: ['@nuxtjs/axios', '@nuxtjs/auth'],
   axios: {
-    baseURL: 'http://localhost:3000',
-    browserBaseURL: 'http://localhost:3000',
+    baseURL: 'http://localhost:3000/api',
+    browserBaseURL: 'http://localhost:3000/api',
+  },
+  auth: {
+    redirect: {
+      login: '/account/login',
+      logout: '/account/login',
+      callback: false,
+      home: '/',
+    },
+    localStorage: false,
+    strategies: {
+      local: {
+        endpoints: {
+          login: {
+            url: '/users/login',
+            method: 'post',
+            propertyName: 'token',
+          },
+          logout: false,
+          user: { url: '/users/user', method: 'get', propertyName: 'user' },
+        },
+        tokenRequired: true,
+        tokenType: 'bearer',
+      },
+    },
+  },
+  router: {
+    middleware: ['auth'],
+    // middleware: ['guest'],
   },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify

@@ -1,5 +1,6 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
-import { User } from './User'
+// import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from "typeorm";
+// import { User } from './User'
 
 @Entity()
 export class Todo extends BaseEntity {
@@ -12,7 +13,12 @@ export class Todo extends BaseEntity {
 
   @Column()
   isDone: boolean = false;
+  @CreateDateColumn()
+  createdAt: Date
 
-  @ManyToOne(() => User, user => user.todos)
-  user: User;
+  @UpdateDateColumn()
+  updatedAt: Date
+
+  // @ManyToOne(() => User, user => user.todos)
+  // user: User;
 }

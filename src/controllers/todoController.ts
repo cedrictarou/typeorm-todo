@@ -3,7 +3,7 @@ import { Todo } from "../entity/Todo";
 
 // show all todos
 export const showAllTodos: RequestHandler = async (req, res, next) => {
-  const todos = await Todo.find({ relations: ["user"] })
+  const todos = await Todo.find()
   res.json(todos)
 }
 
@@ -11,7 +11,7 @@ export const showAllTodos: RequestHandler = async (req, res, next) => {
 export const showOneTodo: RequestHandler = async (req, res, next) => {
   const targetTodoId = req.params.id
   try {
-    const targetTodo = await Todo.findOneOrFail(targetTodoId, { relations: ["user"] })
+    const targetTodo = await Todo.findOneOrFail(targetTodoId)
     res.json(targetTodo)
   } catch (error) {
     console.log(error)

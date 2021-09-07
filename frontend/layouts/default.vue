@@ -12,15 +12,21 @@
           <v-avatar size="80" class="mb-2">
             <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
           </v-avatar>
-          <div class="white--text text-subtitle-1 font-weight-bold">
-            Cedric 太郎
+          <div
+            v-if="$auth.loggedIn"
+            class="white--text text-subtitle-1 font-weight-bold"
+          >
+            {{ $auth.user.name }}
+          </div>
+          <div v-else class="white--text text-subtitle-1 font-weight-bold">
+            ゲストユーザー
           </div>
         </div>
       </v-img>
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title class="text-h6"> My Todo App</v-list-item-title>
-          <v-list-item-subtitle> manage your tasks </v-list-item-subtitle>
+          <v-list-item-subtitle> manage your Todos </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
 
@@ -36,6 +42,29 @@
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+
+        <template v-if="$auth.loggedIn">
+          <v-list-item link>
+            <v-list-item-icon>
+              <v-icon>mdi-logout</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title @click="$auth.logout()"
+                >Logout</v-list-item-title
+              >
+            </v-list-item-content>
+          </v-list-item>
+        </template>
+        <template v-else>
+          <v-list-item to="/account/login" link>
+            <v-list-item-icon>
+              <v-icon>mdi-login</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>Login</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </template>
       </v-list>
     </v-navigation-drawer>
 
@@ -84,13 +113,18 @@ export default {
     return {
       drawer: false,
       items: [
-        { title: 'Your Todos', icon: 'mdi-format-list-checks', to: '/todos' },
+        {
+          title: 'Your Todos',
+          icon: 'mdi-format-list-checks',
+          to: '/todos',
+        },
         { title: 'Timer', icon: 'mdi-timer-sand', to: '/timer' },
         { title: 'About', icon: 'mdi-help-box', to: '/about' },
       ],
       right: null,
     }
   },
+  computed: {},
 }
 </script>
 
