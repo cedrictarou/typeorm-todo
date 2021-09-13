@@ -1,4 +1,4 @@
-import { Router, Request, Response } from 'express'
+import { Router } from 'express'
 import * as userController from '../controllers/userController'
 // import * as auth from '../lib/auth'
 

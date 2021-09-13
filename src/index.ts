@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import "reflect-metadata";
 import { createConnection } from "typeorm";
 import cors from 'cors';
@@ -14,7 +15,7 @@ app.use(cors())
 
 // session
 app.use(session({
-  secret: 'secret',
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
   cookie: {

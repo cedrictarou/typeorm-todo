@@ -8,8 +8,8 @@ export const getUserInfo: RequestHandler = async (req, res, next) => {
   const bearToken = req.headers['authorization']
   const bearer = bearToken.split(' ')
   const token = bearer[1]
-
-  jwt.verify(token, 'secret', (err, user) => {
+  const SECRET_KEY = process.env.TOKEN_SECRET
+  jwt.verify(token, SECRET_KEY, (err, user) => {
     if (err) {
       return res.sendStatus(403)
     } else {

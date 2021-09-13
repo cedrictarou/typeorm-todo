@@ -7,7 +7,8 @@ export const createToken = (user) => {
     id: user.id,
     name: user.username,
   }
-  const token = jwt.sign(payload, 'secret')
+  const SECRET_KEY = process.env.TOKEN_SECRET
+  const token = jwt.sign(payload, SECRET_KEY)
   return token
 };
 
